@@ -1,0 +1,15 @@
+{
+  "@@locale": "mr",
+  "appTitle": "स्मार्ट व्हिलेज",
+  "welcomeMessage": "स्मार्ट व्हिलेजमध्ये आपले स्वागत आहे",
+  "villager": "ग्रामस्थ",
+  "admin": "प्रशासक",
+  "officer": "अधिकारी",
+  "login": "लॉगिन",
+  "register": "नोंदणी",
+  "chatWithAdmin": "प्रशासकाशी चॅट करा",
+  "messages": "संदेश",
+  "home": "मुख्य",
+  "profile": "प्रोफाइल",
+  "dashboard": "डॅशबोर्ड"
+}

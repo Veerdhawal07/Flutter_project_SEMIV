@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "909018914120",
+    "project_id": "villagemanager",
+    "storage_bucket": "villagemanager.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:909018914120:android:0f53ec9bffa9480899a77d",
+        "android_client_info": {
+          "package_name": "com.example.main_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA34xsCebdp4lAHWGtrFtJVtHuq0YYmxPk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

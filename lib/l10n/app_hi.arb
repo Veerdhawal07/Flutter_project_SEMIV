@@ -1,0 +1,15 @@
+{
+  "@@locale": "hi",
+  "appTitle": "स्मार्ट विलेज",
+  "welcomeMessage": "स्मार्ट विलेज में आपका स्वागत है",
+  "villager": "ग्रामीण",
+  "admin": "व्यवस्थापक",
+  "officer": "अधिकारी",
+  "login": "लॉगिन",
+  "register": "पंजीकरण",
+  "chatWithAdmin": "व्यवस्थापक के साथ चैट करें",
+  "messages": "संदेश",
+  "home": "मुख्य",
+  "profile": "प्रोफ़ाइल",
+  "dashboard": "डैशबोर्ड"
+}
