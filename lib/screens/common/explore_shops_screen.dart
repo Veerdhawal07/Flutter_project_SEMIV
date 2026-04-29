@@ -67,7 +67,7 @@ class _ExploreShopsScreenState extends State<ExploreShopsScreen> {
                     selected: isSelected,
                     onSelected: (v) =>
                         setState(() => _selectedCategory = category),
-                    selectedColor: AppTheme.primaryColor.withOpacity(0.2),
+                    selectedColor: AppTheme.primaryColor.withValues(alpha: 0.2),
                     checkmarkColor: AppTheme.primaryColor,
                   ),
                 );
@@ -79,8 +79,9 @@ class _ExploreShopsScreenState extends State<ExploreShopsScreen> {
               stream:
                   FirebaseFirestore.instance.collection('shops').snapshots(),
               builder: (context, snapshot) {
-                if (snapshot.hasError)
+                if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
+                }
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 }

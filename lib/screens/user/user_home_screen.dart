@@ -144,8 +144,9 @@ class UserHomeScreen extends ConsumerWidget {
                   .limit(2)
                   .snapshots(),
               builder: (context, snapshot) {
-                if (!snapshot.hasData)
+                if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
+                }
                 final notices = snapshot.data!.docs
                     .map(
                       (doc) => NoticeModel.fromMap(
@@ -221,7 +222,7 @@ class UserHomeScreen extends ConsumerWidget {
         ),
         Text(
           label,
-          style: TextStyle(fontSize: 12, color: color.withOpacity(0.8)),
+          style: TextStyle(fontSize: 12, color: color.withValues(alpha: 0.8)),
         ),
       ],
     );
@@ -260,7 +261,7 @@ class UserHomeScreen extends ConsumerWidget {
       child: Column(
         children: [
           CircleAvatar(
-            backgroundColor: color.withOpacity(0.1),
+            backgroundColor: color.withValues(alpha: 0.1),
             child: Icon(icon, color: color),
           ),
           const SizedBox(height: 4),

@@ -9,6 +9,7 @@ import 'package:path/path.dart' as path;
 
 import '../../core/theme/app_theme.dart';
 import '../../models/complaint_model.dart';
+import '../../models/user_model.dart';
 import '../../services/notification_service.dart';
 
 class TaskDetailsOfficerScreen extends ConsumerStatefulWidget {

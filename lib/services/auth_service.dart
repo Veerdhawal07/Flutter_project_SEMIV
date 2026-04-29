@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/user_model.dart';
 
@@ -68,6 +69,10 @@ class AuthService {
   }
 
   Future<void> signOut() async {
+    // Clear the saved role from SharedPreferences
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('user_role');
+    
     await _auth.signOut();
   }
 }

@@ -65,9 +65,7 @@ class NotificationService {
       // Logic for foreground notification if needed
     });
 
-    // Handle background/terminated state when user taps on notification
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      // Navigation logic based on message.data
     });
   }
 

@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 import '../../core/theme/app_theme.dart';
 import '../../models/chat_model.dart';
+import '../../models/user_model.dart';
 import '../../providers/auth_provider.dart';
 import '../../services/notification_service.dart';
 
@@ -66,8 +67,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
     // Send Notification
     final userModel = ref.read(userModelProvider).value;
+    final senderRole = userModel?.role ?? UserRole.user;
     ref.read(notificationServiceProvider).sendNotificationToUser(
           widget.otherUserId,
+          senderRole,
           'New message from ${userModel?.fullName ?? "Someone"}',
           text,
         );
@@ -96,8 +99,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   .orderBy('timestamp', descending: true)
                   .snapshots(),
               builder: (context, snapshot) {
-                if (!snapshot.hasData)
+                if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
+                }
 
                 final messages = snapshot.data!.docs.map((doc) {
                   return MessageModel.fromMap(
@@ -170,7 +174,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
+            color: Colors.grey.withValues(alpha: 0.5),
             spreadRadius: 1,
             blurRadius: 5,
           ),

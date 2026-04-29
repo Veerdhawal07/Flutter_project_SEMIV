@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/theme/app_theme.dart';
 import '../../models/complaint_model.dart';
+import '../../models/user_model.dart';
 import '../../services/notification_service.dart';
 
 class ComplaintDetailsAdminScreen extends ConsumerStatefulWidget {
@@ -49,6 +50,7 @@ class _ComplaintDetailsAdminScreenState
       // Send Notification to Villager
       await ref.read(notificationServiceProvider).sendNotificationToUser(
             widget.complaint.userId,
+            UserRole.user,
             'Complaint Update',
             'Your complaint "${widget.complaint.title}" is now ${status.name}.',
           );
@@ -57,6 +59,7 @@ class _ComplaintDetailsAdminScreenState
       if (status == ComplaintStatus.assigned && _selectedOfficerId != null) {
         await ref.read(notificationServiceProvider).sendNotificationToUser(
               _selectedOfficerId!,
+              UserRole.officer,
               'New Task Assigned',
               'You have been assigned a new task: ${widget.complaint.title}',
             );
@@ -156,8 +159,9 @@ class _ComplaintDetailsAdminScreenState
                     .where('role', isEqualTo: 'officer')
                     .snapshots(),
                 builder: (context, snapshot) {
-                  if (!snapshot.hasData)
+                  if (!snapshot.hasData) {
                     return const CircularProgressIndicator();
+                  }
                   final officers = snapshot.data!.docs;
                   return DropdownButtonFormField<String>(
                     decoration: const InputDecoration(

@@ -155,7 +155,7 @@ class _PostComplaintScreenState extends ConsumerState<PostComplaintScreen> {
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
-                value: _category,
+                initialValue: _category,
                 decoration: const InputDecoration(
                   labelText: 'Category',
                   prefixIcon: Icon(Icons.category),
@@ -198,7 +198,7 @@ class _PostComplaintScreenState extends ConsumerState<PostComplaintScreen> {
                           ),
                           value: p,
                           groupValue: _priority,
-                          onChanged: (v) => setState(() => _priority = v!),
+                          onChanged: (ComplaintPriority? v) => setState(() => _priority = v!),
                           contentPadding: EdgeInsets.zero,
                         ),
                       ),

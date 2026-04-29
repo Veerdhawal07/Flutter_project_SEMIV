@@ -63,7 +63,7 @@ class AdminDashboard extends StatelessWidget {
                       ),
                     );
                   },
-                  icon: const Icon(Icons.add),
+                  icon: const Icon(Icons.add, size: 18),
                   label: const Text('Post Notice'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.secondaryColor,
@@ -136,8 +136,9 @@ class AdminDashboard extends StatelessWidget {
                   .limit(5)
                   .snapshots(),
               builder: (context, snapshot) {
-                if (!snapshot.hasData)
+                if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
+                }
                 final docs = snapshot.data!.docs;
                 return ListView.builder(
                   shrinkWrap: true,
@@ -152,7 +153,7 @@ class AdminDashboard extends StatelessWidget {
                       leading: CircleAvatar(
                         backgroundColor: _getPriorityColor(
                           complaint.priority,
-                        ).withOpacity(0.2),
+                        ).withValues(alpha: 0.2),
                         child: Icon(
                           Icons.warning,
                           color: _getPriorityColor(complaint.priority),
@@ -187,7 +188,7 @@ class AdminDashboard extends StatelessWidget {
   Widget _buildStatCard(String label, String count, Color color) {
     return Expanded(
       child: Card(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: Column(

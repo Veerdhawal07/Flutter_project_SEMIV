@@ -68,8 +68,6 @@ class _SmartVillageAppState extends ConsumerState<SmartVillageApp> {
                   return const OfficerMainScreen();
                 case UserRole.user:
                   return const UserMainScreen();
-                default:
-                  return const UserMainScreen();
               }
             },
             loading: () => const LoadingScreen(),

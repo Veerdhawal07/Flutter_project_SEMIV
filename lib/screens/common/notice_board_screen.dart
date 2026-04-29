@@ -18,8 +18,9 @@ class NoticeBoardScreen extends StatelessWidget {
             .orderBy('createdAt', descending: true)
             .snapshots(),
         builder: (context, snapshot) {
-          if (snapshot.hasError)
+          if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
+          }
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
@@ -91,7 +92,7 @@ class NoticeBoardScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: notice.isEmergency
                             ? Colors.red
-                            : AppTheme.primaryColor.withOpacity(0.1),
+                            : AppTheme.primaryColor.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(

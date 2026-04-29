@@ -126,10 +126,11 @@ class _AddShopScreenState extends ConsumerState<AddShopScreen> {
         Navigator.pop(context);
       }
     } catch (e) {
-      if (mounted)
+      if (mounted) {
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(SnackBar(content: Text('Error: $e')));
+      }
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -148,7 +149,7 @@ class _AddShopScreenState extends ConsumerState<AddShopScreen> {
               _buildTextField(_nameController, 'Shop Name', Icons.store),
               _buildTextField(_ownerController, 'Owner Name', Icons.person),
               DropdownButtonFormField<String>(
-                value: _category,
+                initialValue: _category,
                 decoration: const InputDecoration(
                   labelText: 'Category',
                   prefixIcon: Icon(Icons.category),

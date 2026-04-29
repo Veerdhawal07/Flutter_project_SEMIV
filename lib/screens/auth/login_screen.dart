@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../../models/user_model.dart';
@@ -50,7 +51,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       );
 
       if (credential?.user != null) {
-        final email = credential!.user!.email;
+        final user = credential!.user!;
+        final email = user.email;
 
         // 2. Strict Email Check for Reserved Roles
         if (widget.role == UserRole.admin && email != 'admin@village.com') {
@@ -71,7 +73,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
         // 3. Fetch user data from specific collection (admins/officers/users)
         final userModel =
-            await authService.getUserData(credential!.user!.uid, widget.role);
+            await authService.getUserData(user.uid, widget.role);
 
         if (userModel == null) {
           await authService.signOut();
@@ -89,10 +91,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       }
 
       if (mounted) {
-        // Success: The user will be automatically redirected by the main.dart auth wrapper
-        // We use popUntil to clear the auth stack if needed, or just pop back to the role selection
-        // which will then trigger the redirect in main.dart
-        Navigator.of(context).popUntil((route) => route.isFirst);
+        // Save the role before navigating back
+        ref.read(userRoleProvider.notifier).state = widget.role;
+        
+        // Also save to SharedPreferences for persistence
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('user_role', widget.role.name);
+        
+        if (mounted) {
+          // Success: The user will be automatically redirected by the main.dart auth wrapper
+          Navigator.of(context).popUntil((route) => route.isFirst);
+        }
       }
     } catch (e) {
       if (mounted) {
