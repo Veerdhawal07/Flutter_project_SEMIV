@@ -5,6 +5,7 @@ enum ComplaintStatus {
   seen,
   assigned,
   inProgress,
+  resolutionProposed,
   completed,
   rejected,
 }

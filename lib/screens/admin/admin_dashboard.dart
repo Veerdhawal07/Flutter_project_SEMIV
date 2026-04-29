@@ -1,13 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-import '../../core/theme/app_theme.dart';
 import '../../models/complaint_model.dart';
 import '../common/chat_list_screen.dart';
 import '../common/notice_board_screen.dart';
 import 'add_notice_screen.dart';
 import 'complaint_details_admin_screen.dart';
+import 'manage_officers_screen.dart';
 
 class AdminDashboard extends StatelessWidget {
   const AdminDashboard({super.key});
@@ -42,128 +41,171 @@ class AdminDashboard extends StatelessWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
+      body: ListView(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Overview',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        children: [
+          // Quick Actions
+          const Text(
+            'Quick Actions',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 12),
+          _buildActionButton(
+            context,
+            icon: Icons.add,
+            label: 'Post Notice',
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AddNoticeScreen(),
                 ),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AddNoticeScreen(),
-                      ),
-                    );
-                  },
-                  icon: const Icon(Icons.add, size: 18),
-                  label: const Text('Post Notice'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.secondaryColor,
-                    foregroundColor: Colors.white,
+              );
+            },
+          ),
+          const SizedBox(height: 8),
+          _buildActionButton(
+            context,
+            icon: Icons.people,
+            label: 'Manage Officers',
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ManageOfficersScreen(),
+                ),
+              );
+            },
+          ),
+          const SizedBox(height: 24),
+          
+          // Stats Section
+          const Text(
+            'Statistics',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 12),
+          StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('complaints')
+                .snapshots(),
+            builder: (context, snapshot) {
+              // Handle errors
+              if (snapshot.hasError) {
+                return Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text('Error loading stats: ${snapshot.error}'),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('complaints')
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) return const CircularProgressIndicator();
-                final complaints = snapshot.data!.docs;
-                final pending = complaints
-                    .where((doc) => doc['status'] == 'pending')
-                    .length;
-                final assigned = complaints
-                    .where((doc) => doc['status'] == 'assigned')
-                    .length;
-                final completed = complaints
-                    .where((doc) => doc['status'] == 'completed')
-                    .length;
-
-                return Row(
-                  children: [
-                    _buildStatCard(
-                      'Pending',
-                      pending.toString(),
-                      Colors.orange,
-                    ),
-                    _buildStatCard(
-                      'Assigned',
-                      assigned.toString(),
-                      Colors.blue,
-                    ),
-                    _buildStatCard(
-                      'Resolved',
-                      completed.toString(),
-                      Colors.green,
-                    ),
-                  ],
                 );
-              },
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              'Complaints by Category',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            SizedBox(height: 200, child: _buildCategoryChart()),
-            const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Recent Complaints',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                TextButton(onPressed: () {}, child: const Text('View All')),
-              ],
-            ),
-            StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('complaints')
-                  .orderBy('createdAt', descending: true)
-                  .limit(5)
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
+              }
+              
+              // Show loading
+              if (!snapshot.hasData) {
+                return const Card(
+                  child: Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
+                );
+              }
+              
+              final complaints = snapshot.data!.docs;
+              int pending = 0;
+              int assigned = 0;
+              int completed = 0;
+              
+              for (var doc in complaints) {
+                try {
+                  String status = doc['status'] ?? '';
+                  if (status == 'pending' || status == 'seen') {
+                    pending++;
+                  } else if (status == 'assigned') {
+                    assigned++;
+                  } else if (status == 'completed') {
+                    completed++;
+                  }
+                } catch (e) {
+                  // Skip documents with errors
                 }
-                final docs = snapshot.data!.docs;
-                return ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: docs.length,
-                  itemBuilder: (context, index) {
-                    final complaint = ComplaintModel.fromMap(
-                      docs[index].data() as Map<String, dynamic>,
-                      docs[index].id,
-                    );
-                    return ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: _getPriorityColor(
-                          complaint.priority,
-                        ).withValues(alpha: 0.2),
-                        child: Icon(
-                          Icons.warning,
-                          color: _getPriorityColor(complaint.priority),
-                        ),
+              }
+              
+              return Column(
+                children: [
+                  _buildStatCard('Total', complaints.length.toString(), Colors.blue),
+                  const SizedBox(height: 8),
+                  _buildStatCard('Pending', pending.toString(), Colors.orange),
+                  const SizedBox(height: 8),
+                  _buildStatCard('Assigned', assigned.toString(), Colors.purple),
+                  const SizedBox(height: 8),
+                  _buildStatCard('Completed', completed.toString(), Colors.green),
+                ],
+              );
+            },
+          ),
+          const SizedBox(height: 24),
+          
+          // Recent Complaints
+          const Text(
+            'Recent Complaints',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 12),
+          StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('complaints')
+                .orderBy('createdAt', descending: true)
+                .limit(10)
+                .snapshots(),
+            builder: (context, snapshot) {
+              // Handle errors
+              if (snapshot.hasError) {
+                return Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text('Error: ${snapshot.error}'),
+                  ),
+                );
+              }
+              
+              // Show loading
+              if (!snapshot.hasData) {
+                return const Card(
+                  child: Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
+                );
+              }
+              
+              if (snapshot.data!.docs.isEmpty) {
+                return const Card(
+                  child: Padding(
+                    padding: EdgeInsets.all(32.0),
+                    child: Center(
+                      child: Text(
+                        'No complaints yet',
+                        style: TextStyle(fontSize: 16, color: Colors.grey),
                       ),
+                    ),
+                  ),
+                );
+              }
+              
+              final docs = snapshot.data!.docs;
+              return Column(
+                children: docs.map((doc) {
+                  final complaint = ComplaintModel.fromMap(
+                    doc.data() as Map<String, dynamic>,
+                    doc.id,
+                  );
+                  return Card(
+                    margin: const EdgeInsets.only(bottom: 8),
+                    child: ListTile(
+                      leading: const Icon(Icons.warning, color: Colors.orange),
                       title: Text(complaint.title),
-                      subtitle: Text(
-                        '${complaint.category} • ${complaint.area}',
-                      ),
-                      trailing: const Icon(Icons.chevron_right),
+                      subtitle: Text('${complaint.category} - ${complaint.status.name}'),
+                      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                       onTap: () {
                         Navigator.push(
                           context,
@@ -174,36 +216,35 @@ class AdminDashboard extends StatelessWidget {
                           ),
                         );
                       },
-                    );
-                  },
-                );
-              },
-            ),
-          ],
-        ),
+                    ),
+                  );
+                }).toList(),
+              );
+            },
+          ),
+        ],
       ),
     );
   }
-
-  Widget _buildStatCard(String label, String count, Color color) {
-    return Expanded(
-      child: Card(
-        color: color.withValues(alpha: 0.1),
+  
+  Widget _buildActionButton(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return Card(
+      child: InkWell(
+        onTap: onTap,
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
-          child: Column(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
             children: [
-              Text(
-                count,
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: color,
-                ),
-              ),
+              Icon(icon, size: 24),
+              const SizedBox(width: 12),
               Text(
                 label,
-                style: TextStyle(color: color, fontWeight: FontWeight.w500),
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               ),
             ],
           ),
@@ -211,84 +252,34 @@ class AdminDashboard extends StatelessWidget {
       ),
     );
   }
-
-  Color _getPriorityColor(ComplaintPriority priority) {
-    switch (priority) {
-      case ComplaintPriority.low:
-        return Colors.green;
-      case ComplaintPriority.medium:
-        return Colors.orange;
-      case ComplaintPriority.high:
-        return Colors.red;
-      case ComplaintPriority.emergency:
-        return Colors.purple;
-    }
-  }
-
-  Widget _buildCategoryChart() {
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('complaints').snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return const SizedBox();
-        Map<String, int> counts = {};
-        for (var doc in snapshot.data!.docs) {
-          String cat = doc['category'] ?? 'Other';
-          counts[cat] = (counts[cat] ?? 0) + 1;
-        }
-
-        List<PieChartSectionData> sections = [];
-        int i = 0;
-        final colors = [
-          Colors.blue,
-          Colors.green,
-          Colors.orange,
-          Colors.red,
-          Colors.purple,
-          Colors.teal,
-        ];
-        counts.forEach((key, value) {
-          sections.add(
-            PieChartSectionData(
-              color: colors[i % colors.length],
-              value: value.toDouble(),
-              title: '$value',
-              radius: 50,
-              titleStyle: const TextStyle(
-                fontSize: 12,
+  
+  Widget _buildStatCard(String label, String count, Color color) {
+    return Card(
+      color: color.withValues(alpha: 0.1),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: color,
               ),
             ),
-          );
-          i++;
-        });
-
-        return Row(
-          children: [
-            Expanded(child: PieChart(PieChartData(sections: sections))),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: counts.keys
-                  .map(
-                    (k) => Row(
-                      children: [
-                        Container(
-                          width: 12,
-                          height: 12,
-                          color: colors[
-                              counts.keys.toList().indexOf(k) % colors.length],
-                        ),
-                        const SizedBox(width: 4),
-                        Text(k, style: const TextStyle(fontSize: 10)),
-                      ],
-                    ),
-                  )
-                  .toList(),
+            Text(
+              count,
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: color,
+              ),
             ),
           ],
-        );
-      },
+        ),
+      ),
     );
   }
 }

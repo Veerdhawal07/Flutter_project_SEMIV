@@ -81,6 +81,7 @@ class OfficerDashboard extends ConsumerWidget {
     Color color = Colors.grey;
     if (status == ComplaintStatus.assigned) color = Colors.blue;
     if (status == ComplaintStatus.inProgress) color = Colors.orange;
+    if (status == ComplaintStatus.resolutionProposed) color = Colors.purple;
     if (status == ComplaintStatus.completed) color = Colors.green;
 
     return Container(

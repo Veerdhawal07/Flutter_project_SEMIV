@@ -169,11 +169,11 @@ class _TaskDetailsOfficerScreenState
                   const SizedBox(width: 16),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () => _updateStatus(ComplaintStatus.completed),
+                      onPressed: () => _updateStatus(ComplaintStatus.resolutionProposed),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.green,
                       ),
-                      child: const Text('COMPLETE'),
+                      child: const Text('COMPLETE WORK'),
                     ),
                   ),
                 ],

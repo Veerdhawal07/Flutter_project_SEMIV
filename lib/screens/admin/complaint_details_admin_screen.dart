@@ -137,6 +137,28 @@ class _ComplaintDetailsAdminScreenState
               widget.complaint.isAnonymous ? 'Anonymous' : 'Villager',
             ),
             const SizedBox(height: 24),
+            if (widget.complaint.status == ComplaintStatus.resolutionProposed || 
+                widget.complaint.status == ComplaintStatus.completed) ...[
+              const Text(
+                'Resolution Details',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              if (widget.complaint.officerNotes != null && widget.complaint.officerNotes!.isNotEmpty)
+                Text('Notes: ${widget.complaint.officerNotes}'),
+              const SizedBox(height: 8),
+              if (widget.complaint.resolutionImageUrl != null && widget.complaint.resolutionImageUrl!.isNotEmpty)
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.network(
+                    widget.complaint.resolutionImageUrl!,
+                    height: 200,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              const SizedBox(height: 24),
+            ],
             const Text(
               'Admin Actions',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -155,8 +177,7 @@ class _ComplaintDetailsAdminScreenState
                 widget.complaint.status == ComplaintStatus.seen)
               StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
-                    .collection('users')
-                    .where('role', isEqualTo: 'officer')
+                    .collection('officers')
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
@@ -204,14 +225,23 @@ class _ComplaintDetailsAdminScreenState
                     ),
                   ),
                   const SizedBox(width: 16),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: _selectedOfficerId == null
-                          ? null
-                          : () => _updateComplaint(ComplaintStatus.assigned),
-                      child: const Text('ASSIGN'),
+                  if (widget.complaint.status == ComplaintStatus.resolutionProposed)
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () => _updateComplaint(ComplaintStatus.completed),
+                        style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                        child: const Text('MARK COMPLETE'),
+                      ),
+                    )
+                  else
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: _selectedOfficerId == null
+                            ? null
+                            : () => _updateComplaint(ComplaintStatus.assigned),
+                        child: const Text('ASSIGN'),
+                      ),
                     ),
-                  ),
                 ],
               ),
           ],

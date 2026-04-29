@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../common/explore_shops_screen.dart';
 import '../common/profile_screen.dart';
 import 'post_complaint_screen.dart';
 import 'user_complaints_screen.dart';
@@ -20,7 +19,6 @@ class _UserMainScreenState extends State<UserMainScreen> {
     const UserHomeScreen(),
     const PostComplaintScreen(),
     const UserComplaintsScreen(),
-    const ExploreShopsScreen(),
     const ProfileScreen(),
   ];
 
@@ -44,7 +42,6 @@ class _UserMainScreenState extends State<UserMainScreen> {
             icon: Icon(Icons.assignment),
             label: 'Status',
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.store), label: 'Shops'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),

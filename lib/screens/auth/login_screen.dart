@@ -26,8 +26,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     // Pre-fill reserved emails for convenience
     if (widget.role == UserRole.admin) {
       _emailController.text = 'admin@village.com';
-    } else if (widget.role == UserRole.officer) {
-      _emailController.text = 'officer@village.com';
     }
   }
 
@@ -59,14 +57,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           await authService.signOut();
           throw 'Unauthorized: Only the main Admin account can access this portal.';
         }
-        if (widget.role == UserRole.officer && email != 'officer@village.com') {
-          await authService.signOut();
-          throw 'Unauthorized: Only the official Officer account can access this portal.';
-        }
 
         // Prevent reserved accounts from logging in as Villagers
-        if (widget.role == UserRole.user &&
-            (email == 'admin@village.com' || email == 'officer@village.com')) {
+        if (widget.role == UserRole.user && email == 'admin@village.com') {
           await authService.signOut();
           throw 'Unauthorized: Reserved accounts cannot log in as a Villager.';
         }

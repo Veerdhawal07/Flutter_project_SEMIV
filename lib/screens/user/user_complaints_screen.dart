@@ -205,6 +205,9 @@ class UserComplaintsScreen extends ConsumerWidget {
       case ComplaintStatus.inProgress:
         color = Colors.amber;
         break;
+      case ComplaintStatus.resolutionProposed:
+        color = Colors.purpleAccent;
+        break;
       case ComplaintStatus.completed:
         color = Colors.green;
         break;

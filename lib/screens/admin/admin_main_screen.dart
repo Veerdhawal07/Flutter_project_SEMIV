@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../common/explore_shops_screen.dart';
 import '../common/profile_screen.dart';
 import 'admin_dashboard.dart';
 import 'manage_officers_screen.dart';
@@ -18,7 +17,6 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
   final List<Widget> _screens = [
     const AdminDashboard(),
     const ManageOfficersScreen(),
-    const ExploreShopsScreen(),
     const ProfileScreen(),
   ];
 
@@ -38,7 +36,6 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
             label: 'Dashboard',
           ),
           BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Officers'),
-          BottomNavigationBarItem(icon: Icon(Icons.store), label: 'Shops'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),
