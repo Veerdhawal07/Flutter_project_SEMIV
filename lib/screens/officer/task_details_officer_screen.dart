@@ -1,4 +1,4 @@
-import 'dart:io';
+﻿import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -61,7 +61,7 @@ class _TaskDetailsOfficerScreenState
         if (imageUrl != null) 'resolutionImageUrl': imageUrl,
       });
 
-      // Notify Villager
+      
       await ref.read(notificationServiceProvider).sendNotificationToUser(
             widget.task.userId,
             UserRole.user,

@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -45,7 +45,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         FirebaseFirestore.instance.collection('chatRooms').doc(_chatRoomId);
 
     await FirebaseFirestore.instance.runTransaction((transaction) async {
-      // Add message
+      
       final messageRef = chatRoomRef.collection('messages').doc();
       transaction.set(messageRef, {
         'senderId': currentUser.uid,
@@ -54,7 +54,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         'isRead': false,
       });
 
-      // Update room
+      
       transaction.set(
           chatRoomRef,
           {
@@ -65,7 +65,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           SetOptions(merge: true));
     });
 
-    // Send Notification
+    
     final userModel = ref.read(userModelProvider).value;
     final senderRole = userModel?.role ?? UserRole.user;
     ref.read(notificationServiceProvider).sendNotificationToUser(

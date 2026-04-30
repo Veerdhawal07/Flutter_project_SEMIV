@@ -1,4 +1,4 @@
-import 'package:firebase_core/firebase_core.dart';
+﻿import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -36,7 +36,7 @@ class _SmartVillageAppState extends ConsumerState<SmartVillageApp> {
 
   Future<void> _initializeNotifications() async {
     await ref.read(notificationServiceProvider).initialize();
-    // Automatically subscribe to general announcements
+    
     await ref.read(notificationServiceProvider).subscribeToTopic('notices');
   }
 

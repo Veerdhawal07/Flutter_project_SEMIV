@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -27,16 +27,16 @@ class _SetupInitialAccountsScreenState
       _logs.clear();
     });
 
-    _log('🚀 Setting up initial admin and officer accounts...\n');
+    _log(' Setting up initial admin and officer accounts...\n');
 
     try {
       await _createAdminAccount();
       await _createOfficerAccount();
-      _log('\n✅ Setup completed successfully!');
-      _log('📧 Admin: admin@village.com / admin123');
-      _log('📧 Officer: officer@village.com / officer123');
+      _log('\n Setup completed successfully!');
+      _log(' Admin: admin@village.com / admin123');
+      _log(' Officer: officer@village.com / officer123');
     } catch (e) {
-      _log('\n❌ Error during setup: $e');
+      _log('\n Error during setup: $e');
     } finally {
       setState(() => _isLoading = false);
     }
@@ -49,7 +49,7 @@ class _SetupInitialAccountsScreenState
     try {
       _log('Creating admin account...');
 
-      // Create Firebase Auth user
+      
       UserCredential credential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
@@ -58,7 +58,7 @@ class _SetupInitialAccountsScreenState
 
       String uid = credential.user!.uid;
 
-      // Create admin document in Firestore
+      
       await FirebaseFirestore.instance.collection('admins').doc(uid).set({
         'uid': uid,
         'fullName': 'System Admin',
@@ -68,16 +68,16 @@ class _SetupInitialAccountsScreenState
         'createdAt': FieldValue.serverTimestamp(),
       });
 
-      _log('✅ Admin account created successfully\n');
+      _log(' Admin account created successfully\n');
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
-        _log('⚠️  Admin email already exists in Firebase Auth');
-        _log('🔄 Checking if Firestore document exists...');
+        _log('  Admin email already exists in Firebase Auth');
+        _log(' Checking if Firestore document exists...');
         
-        // Try to find and update the existing user's Firestore document
+        
         await _ensureAdminDocumentExists(email);
       } else {
-        _log('❌ Error creating admin: ${e.message}');
+        _log(' Error creating admin: ${e.message}');
         rethrow;
       }
     }
@@ -85,20 +85,20 @@ class _SetupInitialAccountsScreenState
 
   Future<void> _ensureAdminDocumentExists(String email) async {
     try {
-      // Sign in to get the UID
+      
       UserCredential credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: 'admin123',
       );
       
       String uid = credential.user!.uid;
-      _log('📝 Found admin UID: $uid');
+      _log(' Found admin UID: $uid');
       
-      // Check if document exists
+      
       var doc = await FirebaseFirestore.instance.collection('admins').doc(uid).get();
       
       if (!doc.exists) {
-        _log('📝 Creating Firestore document for existing admin...');
+        _log(' Creating Firestore document for existing admin...');
         await FirebaseFirestore.instance.collection('admins').doc(uid).set({
           'uid': uid,
           'fullName': 'System Admin',
@@ -107,16 +107,16 @@ class _SetupInitialAccountsScreenState
           'role': 'admin',
           'createdAt': FieldValue.serverTimestamp(),
         });
-        _log('✅ Admin Firestore document created successfully');
+        _log(' Admin Firestore document created successfully');
       } else {
-        _log('✅ Admin Firestore document already exists');
+        _log(' Admin Firestore document already exists');
       }
       
-      // Sign out after checking
+      
       await FirebaseAuth.instance.signOut();
       _log('');
     } catch (e) {
-      _log('❌ Error ensuring admin document: $e');
+      _log(' Error ensuring admin document: $e');
     }
   }
 
@@ -127,7 +127,7 @@ class _SetupInitialAccountsScreenState
     try {
       _log('Creating officer account...');
 
-      // Create Firebase Auth user
+      
       UserCredential credential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
@@ -136,7 +136,7 @@ class _SetupInitialAccountsScreenState
 
       String uid = credential.user!.uid;
 
-      // Create officer document in Firestore
+      
       await FirebaseFirestore.instance.collection('officers').doc(uid).set({
         'uid': uid,
         'fullName': 'Field Officer',
@@ -149,16 +149,16 @@ class _SetupInitialAccountsScreenState
         'createdAt': FieldValue.serverTimestamp(),
       });
 
-      _log('✅ Officer account created successfully\n');
+      _log(' Officer account created successfully\n');
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
-        _log('⚠️  Officer email already exists in Firebase Auth');
-        _log('🔄 Checking if Firestore document exists...');
+        _log('  Officer email already exists in Firebase Auth');
+        _log(' Checking if Firestore document exists...');
         
-        // Try to find and update the existing user's Firestore document
+        
         await _ensureOfficerDocumentExists(email);
       } else {
-        _log('❌ Error creating officer: ${e.message}');
+        _log(' Error creating officer: ${e.message}');
         rethrow;
       }
     }
@@ -166,20 +166,20 @@ class _SetupInitialAccountsScreenState
 
   Future<void> _ensureOfficerDocumentExists(String email) async {
     try {
-      // Sign in to get the UID
+      
       UserCredential credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: 'officer123',
       );
       
       String uid = credential.user!.uid;
-      _log('📝 Found officer UID: $uid');
+      _log(' Found officer UID: $uid');
       
-      // Check if document exists
+      
       var doc = await FirebaseFirestore.instance.collection('officers').doc(uid).get();
       
       if (!doc.exists) {
-        _log('📝 Creating Firestore document for existing officer...');
+        _log(' Creating Firestore document for existing officer...');
         await FirebaseFirestore.instance.collection('officers').doc(uid).set({
           'uid': uid,
           'fullName': 'Field Officer',
@@ -191,16 +191,16 @@ class _SetupInitialAccountsScreenState
           'officerId': 'OFF001',
           'createdAt': FieldValue.serverTimestamp(),
         });
-        _log('✅ Officer Firestore document created successfully');
+        _log(' Officer Firestore document created successfully');
       } else {
-        _log('✅ Officer Firestore document already exists');
+        _log(' Officer Firestore document already exists');
       }
       
-      // Sign out after checking
+      
       await FirebaseAuth.instance.signOut();
       _log('');
     } catch (e) {
-      _log('❌ Error ensuring officer document: $e');
+      _log(' Error ensuring officer document: $e');
     }
   }
 
@@ -223,10 +223,10 @@ class _SetupInitialAccountsScreenState
             const SizedBox(height: 8),
             const Text(
               'This will create the following accounts:\n\n'
-              '📧 Admin:\n'
+              ' Admin:\n'
               '   Email: admin@village.com\n'
               '   Password: admin123\n\n'
-              '📧 Officer:\n'
+              ' Officer:\n'
               '   Email: officer@village.com\n'
               '   Password: officer123',
               style: TextStyle(fontSize: 16),

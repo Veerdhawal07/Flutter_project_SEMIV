@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -47,7 +47,7 @@ class UserHomeScreen extends ConsumerWidget {
             const Text('Your village is growing today!'),
             const SizedBox(height: 24),
 
-            // Stats Card
+            
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -68,7 +68,7 @@ class UserHomeScreen extends ConsumerWidget {
                           '$count', 'Village Solved', Colors.white);
                     },
                   ),
-                  _buildStatItem('24°C', 'Weather', Colors.white),
+                  _buildStatItem('24C', 'Weather', Colors.white),
                   _buildStatItem('Normal', 'Water Supply', Colors.white),
                 ],
               ),
@@ -168,7 +168,7 @@ class UserHomeScreen extends ConsumerWidget {
                           child: _buildNewsCard(
                             notice.title,
                             notice.description,
-                            '${notice.category} • ${notice.createdAt.day}/${notice.createdAt.month}',
+                            '${notice.category}  ${notice.createdAt.day}/${notice.createdAt.month}',
                           ),
                         ),
                       )

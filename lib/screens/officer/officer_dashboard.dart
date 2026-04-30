@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -63,7 +63,7 @@ class OfficerDashboard extends ConsumerWidget {
           task.title,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        subtitle: Text('${task.category} • ${task.area}'),
+        subtitle: Text('${task.category}  ${task.area}'),
         trailing: _buildStatusBadge(task.status),
         onTap: () {
           Navigator.push(

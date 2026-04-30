@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+﻿import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,10 +17,10 @@ final userModelProvider = FutureProvider<UserModel?>((ref) async {
   final user = ref.watch(authStateProvider).value;
   if (user == null) return null;
   
-  // First, try to get role from the provider
+  
   var role = ref.watch(userRoleProvider);
   
-  // If role is still default (user), try to load from SharedPreferences
+  
   if (role == UserRole.user) {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -30,11 +30,11 @@ final userModelProvider = FutureProvider<UserModel?>((ref) async {
           (e) => e.name == savedRole,
           orElse: () => UserRole.user,
         );
-        // Update the provider with saved role
+        
         ref.read(userRoleProvider.notifier).state = role;
       }
     } catch (e) {
-      // If loading fails, continue with default role
+      
     }
   }
   

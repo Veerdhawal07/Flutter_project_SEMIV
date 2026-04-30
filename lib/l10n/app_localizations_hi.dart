@@ -1,46 +1,46 @@
-// ignore: unused_import
+﻿
 import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
 
-// ignore_for_file: type=lint
 
-/// The translations for Hindi (`hi`).
+
+
 class AppLocalizationsHi extends AppLocalizations {
   AppLocalizationsHi([String locale = 'hi']) : super(locale);
 
   @override
-  String get appTitle => 'स्मार्ट विलेज';
+  String get appTitle => ' ';
 
   @override
-  String get welcomeMessage => 'स्मार्ट विलेज में आपका स्वागत है';
+  String get welcomeMessage => '     ';
 
   @override
-  String get villager => 'ग्रामीण';
+  String get villager => '';
 
   @override
-  String get admin => 'व्यवस्थापक';
+  String get admin => '';
 
   @override
-  String get officer => 'अधिकारी';
+  String get officer => '';
 
   @override
-  String get login => 'लॉगिन';
+  String get login => '';
 
   @override
-  String get register => 'पंजीकरण';
+  String get register => '';
 
   @override
-  String get chatWithAdmin => 'व्यवस्थापक के साथ चैट करें';
+  String get chatWithAdmin => '    ';
 
   @override
-  String get messages => 'संदेश';
+  String get messages => '';
 
   @override
-  String get home => 'मुख्य';
+  String get home => '';
 
   @override
-  String get profile => 'प्रोफ़ाइल';
+  String get profile => '';
 
   @override
-  String get dashboard => 'डैशबोर्ड';
+  String get dashboard => '';
 }

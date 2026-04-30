@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,7 +10,7 @@ class AuthService {
 
   Stream<User?> get authStateChanges => _auth.authStateChanges();
 
-  // Helper to get collection name based on role
+  
   String _getCollection(UserRole role) {
     switch (role) {
       case UserRole.admin:
@@ -69,7 +69,7 @@ class AuthService {
   }
 
   Future<void> signOut() async {
-    // Clear the saved role from SharedPreferences
+    
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('user_role');
     

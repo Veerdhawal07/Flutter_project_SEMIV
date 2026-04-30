@@ -1,4 +1,4 @@
-import 'dart:convert';
+﻿import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -18,12 +18,12 @@ class NotificationService {
 
   NotificationService(this._ref);
 
-  // IMPORTANT: For production, use Firebase Admin SDK on a backend server.
-  // This legacy FCM API will be deprecated. Consider migrating to HTTP v1 API.
+  
+  
   static const String _fcmEndpoint = 'https://fcm.googleapis.com/fcm/send';
 
-  // TODO: Replace with your actual Server Key from Firebase Console
-  // (Project Settings -> Cloud Messaging -> Cloud Messaging API (Legacy))
+  
+  
   static const String _serverKey = 'YOUR_FIREBASE_SERVER_KEY';
 
   String _getCollection(UserRole role) {
@@ -39,7 +39,7 @@ class NotificationService {
 
   Future<void> initialize() async {
     try {
-      // Request permission for iOS/Android 13+
+      
       NotificationSettings settings = await _fcm.requestPermission(
         alert: true,
         badge: true,
@@ -47,7 +47,7 @@ class NotificationService {
       );
 
       if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-        // Get the token and save it to Firestore
+        
         String? token = await _fcm.getToken();
         if (token != null) {
           _saveTokenToDatabase(token);
@@ -57,12 +57,12 @@ class NotificationService {
       debugPrint('FCM Initialization Error: $e');
     }
 
-    // Listen for token refreshes
+    
     _fcm.onTokenRefresh.listen(_saveTokenToDatabase);
 
-    // Handle foreground messages
+    
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      // Logic for foreground notification if needed
+      
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
@@ -100,7 +100,7 @@ class NotificationService {
     }
   }
 
-  /// Sends a notification to a specific user via their UID and Role
+  
   Future<void> sendNotificationToUser(
     String uid,
     UserRole role,
@@ -119,7 +119,7 @@ class NotificationService {
     }
   }
 
-  /// Sends a notification to a topic (e.g., 'notices' or 'emergency')
+  
   Future<void> sendNotificationToTopic(
     String topic,
     String title,
@@ -134,7 +134,7 @@ class NotificationService {
       return;
     }
 
-    // Note: Legacy FCM API. For production, use HTTP v1 API with OAuth2.
+    
     try {
       final response = await http.post(
         Uri.parse(_fcmEndpoint),

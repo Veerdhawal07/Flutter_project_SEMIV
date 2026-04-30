@@ -1,4 +1,4 @@
-import 'dart:io';
+﻿import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -70,7 +70,7 @@ class _PostComplaintScreenState extends ConsumerState<PostComplaintScreen> {
           imageUrl = await ref.getDownloadURL();
         } catch (e) {
           debugPrint('Storage error (skipping image): $e');
-          // We continue without image if storage fails (e.g. 404 or No Premium)
+          
         }
       }
 
@@ -96,7 +96,7 @@ class _PostComplaintScreenState extends ConsumerState<PostComplaintScreen> {
           .doc(complaintId)
           .set(complaint.toMap());
 
-      // Notify Admins
+      
       ref.read(notificationServiceProvider).sendNotificationToTopic(
             'admin_notices',
             'New Complaint: $_category',

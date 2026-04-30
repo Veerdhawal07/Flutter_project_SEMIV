@@ -1,46 +1,46 @@
-// ignore: unused_import
+﻿
 import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
 
-// ignore_for_file: type=lint
 
-/// The translations for Marathi (`mr`).
+
+
 class AppLocalizationsMr extends AppLocalizations {
   AppLocalizationsMr([String locale = 'mr']) : super(locale);
 
   @override
-  String get appTitle => 'स्मार्ट व्हिलेज';
+  String get appTitle => ' ';
 
   @override
-  String get welcomeMessage => 'स्मार्ट व्हिलेजमध्ये आपले स्वागत आहे';
+  String get welcomeMessage => '    ';
 
   @override
-  String get villager => 'ग्रामस्थ';
+  String get villager => '';
 
   @override
-  String get admin => 'प्रशासक';
+  String get admin => '';
 
   @override
-  String get officer => 'अधिकारी';
+  String get officer => '';
 
   @override
-  String get login => 'लॉगिन';
+  String get login => '';
 
   @override
-  String get register => 'नोंदणी';
+  String get register => '';
 
   @override
-  String get chatWithAdmin => 'प्रशासकाशी चॅट करा';
+  String get chatWithAdmin => '  ';
 
   @override
-  String get messages => 'संदेश';
+  String get messages => '';
 
   @override
-  String get home => 'मुख्य';
+  String get home => '';
 
   @override
-  String get profile => 'प्रोफाइल';
+  String get profile => '';
 
   @override
-  String get dashboard => 'डॅशबोर्ड';
+  String get dashboard => '';
 }

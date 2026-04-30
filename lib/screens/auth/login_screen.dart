@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,7 +23,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    // Pre-fill reserved emails for convenience
+    
     if (widget.role == UserRole.admin) {
       _emailController.text = 'admin@village.com';
     }
@@ -42,7 +42,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     try {
       final authService = ref.read(authServiceProvider);
 
-      // 1. Sign in
+      
       final credential = await authService.signIn(
         _emailController.text.trim(),
         _passwordController.text.trim(),
@@ -52,19 +52,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         final user = credential!.user!;
         final email = user.email;
 
-        // 2. Strict Email Check for Reserved Roles
+        
         if (widget.role == UserRole.admin && email != 'admin@village.com') {
           await authService.signOut();
           throw 'Unauthorized: Only the main Admin account can access this portal.';
         }
 
-        // Prevent reserved accounts from logging in as Villagers
+        
         if (widget.role == UserRole.user && email == 'admin@village.com') {
           await authService.signOut();
           throw 'Unauthorized: Reserved accounts cannot log in as a Villager.';
         }
 
-        // 3. Fetch user data from specific collection (admins/officers/users)
+        
         final userModel =
             await authService.getUserData(user.uid, widget.role);
 
@@ -76,7 +76,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           throw 'Profile Error: No record found in the "$collectionName" collection. Access denied for this portal.';
         }
 
-        // 4. Role Verification
+        
         if (userModel.role != widget.role) {
           await authService.signOut();
           throw 'Role Mismatch: This account is registered as ${userModel.role.name.toUpperCase()} in the database.';
@@ -84,22 +84,22 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       }
 
       if (mounted) {
-        // Save the role before navigating back
+        
         ref.read(userRoleProvider.notifier).state = widget.role;
         
-        // Also save to SharedPreferences for persistence
+        
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('user_role', widget.role.name);
         
         if (mounted) {
-          // Success: The user will be automatically redirected by the main.dart auth wrapper
+          
           Navigator.of(context).popUntil((route) => route.isFirst);
         }
       }
     } catch (e) {
       if (mounted) {
         String errorMessage = e.toString();
-        // Clean up common Firebase error messages for the user
+        
         if (errorMessage.contains('user-not-found') ||
             errorMessage.contains('invalid-credential')) {
           errorMessage = 'Invalid email or password.';

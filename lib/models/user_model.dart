@@ -1,4 +1,4 @@
-enum UserRole { user, admin, officer }
+﻿enum UserRole { user, admin, officer }
 
 class UserModel {
   final String uid;
@@ -8,7 +8,7 @@ class UserModel {
   final String? profilePic;
   final UserRole role;
 
-  // User specific fields
+  
   final String? address;
   final String? villageName;
   final String? wardNumber;
@@ -17,7 +17,7 @@ class UserModel {
   final String? occupation;
   final String? houseNumber;
 
-  // Officer specific fields
+  
   final String? department;
   final String? area;
   final String? officerId;

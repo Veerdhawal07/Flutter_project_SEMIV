@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -47,7 +47,7 @@ class _ComplaintDetailsAdminScreenState
           .doc(widget.complaint.id)
           .update(updateData);
 
-      // Send Notification to Villager
+      
       await ref.read(notificationServiceProvider).sendNotificationToUser(
             widget.complaint.userId,
             UserRole.user,
@@ -55,7 +55,7 @@ class _ComplaintDetailsAdminScreenState
             'Your complaint "${widget.complaint.title}" is now ${status.name}.',
           );
 
-      // Send Notification to Officer if assigned
+      
       if (status == ComplaintStatus.assigned && _selectedOfficerId != null) {
         await ref.read(notificationServiceProvider).sendNotificationToUser(
               _selectedOfficerId!,

@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +60,7 @@ class ManageOfficersScreen extends StatelessWidget {
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   subtitle: Text(
-                    '${officer.department ?? "General"} • ${officer.phone}',
+                    '${officer.department ?? "General"}  ${officer.phone}',
                   ),
                   trailing: IconButton(
                     icon: const Icon(Icons.delete, color: Colors.red),
@@ -156,7 +156,7 @@ class ManageOfficersScreen extends StatelessWidget {
                       setState(() => isLoading = true);
 
                       try {
-                        // Create secondary Firebase App to avoid logging out admin
+                        
                         FirebaseApp tempApp = await Firebase.initializeApp(
                           name: 'temp_officer_creator',
                           options: Firebase.app().options,

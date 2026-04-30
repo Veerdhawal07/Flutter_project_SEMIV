@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../l10n/app_localizations.dart';
@@ -34,7 +34,7 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
     setState(() => _isLoading = true);
     try {
       final userModel = UserModel(
-        uid: '', // Will be set by Firebase
+        uid: '', 
         fullName: _nameController.text.trim(),
         email: _emailController.text.trim(),
         phone: _phoneController.text.trim(),

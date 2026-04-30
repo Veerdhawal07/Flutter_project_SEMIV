@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/complaint_model.dart';
@@ -44,7 +44,7 @@ class AdminDashboard extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
-          // Quick Actions
+          
           const Text(
             'Quick Actions',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -79,7 +79,7 @@ class AdminDashboard extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           
-          // Stats Section
+          
           const Text(
             'Statistics',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -90,7 +90,7 @@ class AdminDashboard extends StatelessWidget {
                 .collection('complaints')
                 .snapshots(),
             builder: (context, snapshot) {
-              // Handle errors
+              
               if (snapshot.hasError) {
                 return Card(
                   child: Padding(
@@ -100,7 +100,7 @@ class AdminDashboard extends StatelessWidget {
                 );
               }
               
-              // Show loading
+              
               if (!snapshot.hasData) {
                 return const Card(
                   child: Padding(
@@ -126,7 +126,7 @@ class AdminDashboard extends StatelessWidget {
                     completed++;
                   }
                 } catch (e) {
-                  // Skip documents with errors
+                  
                 }
               }
               
@@ -145,7 +145,7 @@ class AdminDashboard extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           
-          // Recent Complaints
+          
           const Text(
             'Recent Complaints',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -158,7 +158,7 @@ class AdminDashboard extends StatelessWidget {
                 .limit(10)
                 .snapshots(),
             builder: (context, snapshot) {
-              // Handle errors
+              
               if (snapshot.hasError) {
                 return Card(
                   child: Padding(
@@ -168,7 +168,7 @@ class AdminDashboard extends StatelessWidget {
                 );
               }
               
-              // Show loading
+              
               if (!snapshot.hasData) {
                 return const Card(
                   child: Padding(
